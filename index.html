@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>My To-Do List</h1>
+    <p class="subtitle">Organize your day, one task at a time.</p>
+
+    <form action="/add" method="POST" class="add-form">
+        <input type="text" name="title"
+               placeholder="Enter a new task..." required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <div id="taskList"></div>
+    <p class="count" id="count">Total tasks: 0</p>
+</div>
+
+<script>
+    async function loadTasks() {
+        const response = await fetch("/tasks");
+        const tasks = await response.json();
+        const list = document.getElementById("taskList");
+
+        list.innerHTML = "";
+
+        if (tasks.length === 0) {
+            list.innerHTML =
+                '<p class="empty">No tasks yet. Add your first task!</p>';
+        }
+
+        tasks.forEach((task, index) => {
+            const row = document.createElement("div");
+            row.className = "task";
+
+            const title = document.createElement("span");
+            title.textContent = task.title;
+            if (task.completed) title.classList.add("completed");
+
+            const actions = document.createElement("div");
+            actions.className = "actions";
+
+            const complete = document.createElement("a");
+            complete.href = "/complete/" + index;
+            complete.className = "complete";
+            complete.textContent = task.completed ? "Undo" : "Complete";
+
+            const del = document.createElement("a");
+            del.href = "/delete/" + index;
+            del.className = "delete";
+            del.textContent = "Delete";
+            del.onclick = event => {
+                if (!confirm("Delete this task?")) {
+                    event.preventDefault();
+                }
+            };
+
+            actions.append(complete, del);
+            row.append(title, actions);
+            list.appendChild(row);
+        });
+
+        document.getElementById("count").textContent =
+            "Total tasks: " + tasks.length;
+    }
+
+    loadTasks();
+</script>
+</body>
+</html>
