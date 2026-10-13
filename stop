@@ -1,0 +1,62 @@
+[1mdiff --git a/.github/workflows/ai-review.yml b/.github/workflows/ai-review.yml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..8e94481[m
+[1m--- /dev/null[m
+[1m+++ b/.github/workflows/ai-review.yml[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32mname: AI Review[m
+[32m+[m
+[32m+[m[32mon:[m
+[32m+[m[32m  pull_request:[m
+[32m+[m[32m    types: [opened, synchronize][m
+[32m+[m
+[32m+[m[32mjobs:[m
+[32m+[m[32m  review:[m
+[32m+[m[32m    runs-on: ubuntu-latest[m
+[32m+[m
+[32m+[m[32m    steps:[m
+[32m+[m[32m      - uses: actions/checkout@v4[m
+[32m+[m
+[32m+[m[32m      - uses: actions/setup-python@v5[m
+[32m+[m[32m        with:[m
+[32m+[m[32m          python-version: "3.11"[m
+[32m+[m
+[32m+[m[32m      - name: Run AI Review[m
+[32m+[m[32m        run: python ai_review.py[m
+\ No newline at end of file[m
+[1mdiff --git a/ai_review.py b/ai_review.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f254a6e[m
+[1m--- /dev/null[m
+[1m+++ b/ai_review.py[m
+[36m@@ -0,0 +1,14 @@[m
+[32m+[m[32mimport os[m
+[32m+[m[32mimport json[m
+[32m+[m
+[32m+[m[32mprint("AI Review Started")[m
+[32m+[m
+[32m+[m[32mevent_file = os.getenv("GITHUB_EVENT_PATH")[m
+[32m+[m
+[32m+[m[32mwith open(event_file) as f:[m
+[32m+[m[32m    data = json.load(f)[m
+[32m+[m
+[32m+[m[32mprint("PR Number:", data["pull_request"]["number"])[m
+[32m+[m[32mprint("PR Title:", data["pull_request"]["title"])[m
+[32m+[m
+[32m+[m[32mprint("AI Review Completed")[m
+\ No newline at end of file[m
+[1mdiff --git a/app.py b/app.py[m
+[1mindex 1b95d3f..92b880c 100644[m
+[1m--- a/app.py[m
+[1m+++ b/app.py[m
+[36m@@ -65,4 +65,8 @@[m [mdef delete_task(task_id):[m
+ [m
+ if __name__ == "__main__":[m
+     app.run(debug=True)[m
+[31m-#adding a command line[m
+\ No newline at end of file[m
+[32m+[m[32m#adding a command line[m
+[32m+[m
+[32m+[m[32m#testing PR review[m
+[32m+[m
+[32m+[m[32m#testing fetch[m
